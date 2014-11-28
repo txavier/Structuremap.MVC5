@@ -89,7 +89,6 @@ namespace $rootnamespace$.DependencyResolution {
         public void DisposeNestedContainer() {
             if (CurrentNestedContainer != null) {
                 CurrentNestedContainer.Dispose();
-				CurrentNestedContainer = null;
             }
         }
 
