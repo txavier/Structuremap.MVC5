@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StructureMapDependencyScope.cs" company="Web Advanced">
 // Copyright 2012 Web Advanced (www.webadvanced.com)
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace $rootnamespace$.DependencyResolution {
+namespace HIT.DependencyResolution {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -66,7 +66,7 @@ namespace $rootnamespace$.DependencyResolution {
         private HttpContextBase HttpContext {
             get {
                 var ctx = Container.TryGetInstance<HttpContextBase>();
-                return ctx ?? new HttpContextWrapper(System.Web.HttpContext.Current);
+                return ctx ?? (System.Web.HttpContext.Current == null ? null : new HttpContextWrapper(System.Web.HttpContext.Current));
             }
         }
 
@@ -87,8 +87,12 @@ namespace $rootnamespace$.DependencyResolution {
         }
 
         public void DisposeNestedContainer() {
+            if (HttpContext == null) {
+                return;
+            }
             if (CurrentNestedContainer != null) {
                 CurrentNestedContainer.Dispose();
+				CurrentNestedContainer = null;
             }
         }
 
